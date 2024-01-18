@@ -1,0 +1,58 @@
+journal:
+  name: api-gateway.journal
+server:
+  port: ${PORT:2000}
+spring:
+  jackson:
+    time-zone: UTC
+redis:
+  host: ${REDIS_HOST:localhost}
+  port: ${REDIS_PORT:6379}
+  expiretime: 100
+  password:
+endpoints:
+  users:
+    host: ${USERS_SERVICE_HOST:http://localhost:8082}/v1/user
+    username: ${USERS_SERVICE_USERNAME:user_service}
+    password: ${USERS_SERVICE_PASSWORD:password}
+  token:
+    host: ${TOKENS_SERVICE_HOST:http://localhost:8084}/v1/tokens
+    username: ${TOKENS_SERVICE_USERNAME:tokens_service}
+    password: ${TOKENS_SERVICE_PASSWORD:password}
+  configuration:
+    host: ${CONFIG_SERVICE_HOST:http://localhost:8083}/v1/config
+    username: ${CONFIG_SERVICE_USERNAME:config_service}
+    password: ${CONFIG_SERVICE_PASSWORD:password}
+  public_keys:
+    host: ${CONFIG_SERVICE_HOST:http://localhost:8083}/v1/public-key
+    username: ${CONFIG_SERVICE_USERNAME:config_service}
+    password: ${CONFIG_SERVICE_PASSWORD:password}
+  notifications:
+    host: ${USERS_SERVICE_HOST:http://localhost:8082}/v1/notifications
+    username: ${USERS_SERVICE_USERNAME:user_service}
+    password: ${USERS_SERVICE_PASSWORD:password}
+  credits:
+    host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/credits
+    username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
+    password: ${PAYMENTS_SERVICE_PASSWORD:password}
+  credentials:
+    host: ${USERS_SERVICE_HOST:http://localhost:8082}/v1/credentials
+    username: ${USERS_SERVICE_USERNAME:user_service}
+    password: ${USERS_SERVICE_PASSWORD:password}
+  configurations:
+    host: ${CONFIG_SERVICE_HOST:http://localhost:8083}/v1/config
+    username: ${CONFIG_SERVICE_USERNAME:config_service}
+    password: ${CONFIG_SERVICE_PASSWORD:password}
+  pricing:
+    host: ${CONFIG_SERVICE_HOST:http://localhost:8083}/v1/pricing
+    username: ${CONFIG_SERVICE_USERNAME:config_service}
+    password: ${CONFIG_SERVICE_PASSWORD:password}
+  consumption:
+    host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
+    username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
+    password: ${PAYMENTS_SERVICE_PASSWORD:password}
+  bees:
+    callback-url: /v1/callback
+    forward-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/callback
+    username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
+    password: ${PAYMENTS_SERVICE_PASSWORD:password}
