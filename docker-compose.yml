@@ -1,0 +1,34 @@
+version: '3.3'
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-gateway
+    container_name: api-gateway-local
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 2000:2000
+    environment:
+      - PORT=2000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - USERS_SERVICE_HOST=user-service
+      - USERS_SERVICE_USERNAME=user_service
+      - USERS_SERVICE_PASSWORD=password
+      - TOKENS_SERVICE_HOST=tokens-service
+      - TOKENS_SERVICE_USERNAME=tokens_service
+      - TOKENS_SERVICE_PASSWORD=password
+      - CONFIG_SERVICE_HOST=config-service
+      - CONFIG_SERVICE_USERNAME=config_service
+      - CONFIG_SERVICE_PASSWORD=password
+      - PAYMENTS_SERVICE_HOST=payments-service
+      - PAYMENTS_SERVICE_USERNAME=payments_service
+      - PAYMENTS_SERVICE_PASSWORD=password
+    networks:
+      - app-web-network
+
+networks:
+  app-web-network:
+    driver: bridge
