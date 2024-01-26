@@ -1,8 +1,10 @@
 package ke.co.nectar.api.service.users;
 
 import ke.co.nectar.api.domain.User;
+import ke.co.nectar.api.domain.Utility;
 import ke.co.nectar.api.service.exceptions.ApiResponseException;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -24,4 +26,8 @@ public interface UserService {
                     String ref,
                     Map<String, Object> params)
             throws ApiResponseException;
+
+    List<Utility> getUtilities(String requestId,
+                               String userRef)
+        throws ApiResponseException;
 }

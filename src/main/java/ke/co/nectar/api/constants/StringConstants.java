@@ -32,5 +32,22 @@ public interface StringConstants {
     String SUCCESS_ACTIVATED_CONFIGURATION = "Successfully activated configuration";
     String SUCCESS_DEACTIVATED_CONFIGURATION = "Successfully deactivated configuration";
     String INSUFFICIENT_CREDITS = "Insufficient credits";
-
+    String SUCCESS_OBTAINED_UTILITY_DETAILS = "Successfully obtained utility details";
+    String SUCCESS_OBTAINED_SUBSCRIBER_DETAILS = "Successfully obtained subscriber details";
+    String SUCCESS_ACTIVATED_SUBSCRIBER = "Successfully activated subscriber";
+    String SUCCESS_DEACTIVATED_SUBSCRIBER = "Successfully deactivated subscriber";
+    String SUCCESS_UPDATED_SUBSCRIBER = "Sucessfully updated subscriber";
+    String SUCCESS_CREATED_SUBSCRIBER = "Successfully created subscriber";
+    String SUCCESS_OBTAINED_UTILITY_METERS_DETAILS = "Successfully obtained utility meters";
+    String SUCCESS_OBTAINED_UTILITY = "Successfully obtained utility";
+    String SUCCESS_UPDATED_UTILITY = "Successfully updated utility";
+    String SUCCESS_ACTIVATED_UTILITY = "Successfully activated utility";
+    String SUCCESS_DEACTIVATED_UTILITY = "Successfully deactivated utility";
+    String SUCCESS_OBTAINED_METER_DETAILS = "Successfully obtained meter details";
+    String SUCCESS_OBTAINED_METER_TYPES_DETAILS = "Successfully obtained meter types";
+    String SUCCESS_CREATED_METER = "Successfully created meter";
+    String SUCCESS_UPDATED_METER = "Successfully updated meter";
+    String SUCCESS_ACTIVATED_METER = "Successfully activated meter";
+    String SUCCESS_DEACTIVATED_METER = "Successfully deactivated meter";
+    String SUCCESS_CREATED_UTILITY = "Successfully created utility";
 }

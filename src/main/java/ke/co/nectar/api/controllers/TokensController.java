@@ -68,7 +68,7 @@ public class TokensController extends BaseController {
     @PreAuthorize("hasPermission(#request,'generate_token')")
     @PostMapping(path = "/tokens")
     public ApiResponse generateToken(HttpServletRequest request,
-                               @RequestBody Map<String, Object> params) {
+                                        @RequestBody Map<String, Object> params) {
         String requestId = UUidUtils.generateRef();
         try {
             List<Token> tokenDetails = tokensService.generateToken(requestId,

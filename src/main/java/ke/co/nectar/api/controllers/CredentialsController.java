@@ -48,7 +48,6 @@ public class CredentialsController extends BaseController {
     @PutMapping(path = "/credentials",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse activateCredentials(HttpServletRequest request,
-
                                            @RequestParam(value = "ref") String ref) {
         String requestId = UUidUtils.generateRef();
         String userRef = APIAuthorizationManager.user.getRef();

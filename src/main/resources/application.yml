@@ -49,10 +49,22 @@ endpoints:
     password: ${CONFIG_SERVICE_PASSWORD:password}
   consumption:
     host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
-    username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
-    password: ${PAYMENTS_SERVICE_PASSWORD:password}
+    username: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
+    password: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
   bees:
     callback-url: /v1/callback
     forward-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/callback
     username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
     password: ${PAYMENTS_SERVICE_PASSWORD:password}
+  meters:
+    host: ${METERS_SERVICE_HOST:http://localhost:8082}/v1/meters
+    username: ${METERS_SERVICE_USERNAME:user_service}
+    password: ${METERS_SERVICE_PASSWORD:password}
+  subscribers:
+    host: ${SUBSCRIBERS_SERVICE_HOST:http://localhost:8082}/v1/subscriber
+    username: ${SUBSCRIBERS_SERVICE_USERNAME:user_service}
+    password: ${SUBSCRIBERS_SERVICE_PASSWORD:password}
+  utilities:
+    host: ${UTILITIES_SERVICE_HOST:http://localhost:8082}/v1/utility
+    username: ${UTILITIES_SERVICE_USERNAME:user_service}
+    password: ${UTILITIES_SERVICE_PASSWORD:password}

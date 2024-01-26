@@ -2,6 +2,7 @@ package ke.co.nectar.api.service.users.impl;
 
 import ke.co.nectar.api.controllers.response.ApiResponse;
 import ke.co.nectar.api.domain.User;
+import ke.co.nectar.api.domain.Utility;
 import ke.co.nectar.api.service.exceptions.ApiResponseException;
 import ke.co.nectar.api.service.users.UserService;
 import ke.co.nectar.api.utils.RequestUtils;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private User user;
+
+    @Autowired
+    private Utility utility;
 
     @Value("${endpoints.users.host}")
     private String usersEndpoint;
@@ -77,5 +82,16 @@ public class UserServiceImpl implements UserService {
                         usersBasicAuthPassword),
                 String.format("%s?ref=%s&request_id=%s", usersEndpoint, ref, requestId),
                     new Payload(params).toJson().toString());
+    }
+
+    @Override
+    public List<Utility> getUtilities(String requestId,
+                                      String userRef)
+            throws ApiResponseException {
+        ApiResponse response = requestUtils.get(
+                new BasicAuthCredentials(usersBasicAuthUsername,
+                        usersBasicAuthPassword),
+                String.format("%s/%s/utility?request_id=%s", usersEndpoint, userRef, requestId));
+        return utility.extractMultipleFrom(response);
     }
 }
