@@ -14,7 +14,7 @@ bootRun {
 }
 
 group = 'ke.co.nectar.api'
-version = '3.0.0-alpha'
+version = '3.0.3-alpha'
 
 java {
 	sourceCompatibility = '17'
@@ -30,6 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.data:spring-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'redis.clients:jedis'
 	implementation 'commons-codec:commons-codec'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
