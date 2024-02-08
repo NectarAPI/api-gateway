@@ -68,3 +68,11 @@ endpoints:
     host: ${UTILITIES_SERVICE_HOST:http://localhost:8082}/v1/utility
     username: ${UTILITIES_SERVICE_USERNAME:user_service}
     password: ${UTILITIES_SERVICE_PASSWORD:password}
+management:
+  health:
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
