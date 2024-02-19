@@ -50,4 +50,5 @@ public interface StringConstants {
     String SUCCESS_ACTIVATED_METER = "Successfully activated meter";
     String SUCCESS_DEACTIVATED_METER = "Successfully deactivated meter";
     String SUCCESS_CREATED_UTILITY = "Successfully created utility";
+    String SUCCESS_OBTAINED_PAYMENTS = "Successfully obtained payments";
 }
