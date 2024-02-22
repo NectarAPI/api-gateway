@@ -52,7 +52,7 @@ public class PaymentsController  extends BaseController {
         String requestId = UUidUtils.generateRef();
         try {
             Payment paymentData = paymentsService.getPayment(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+                    requestId, paymentRef);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,
@@ -70,22 +70,21 @@ public class PaymentsController  extends BaseController {
      * @Param paymentType, which must be supported in the payments
      * service.
      * @param request
-     * @param paymentRef
      * @return
      */
     @PreAuthorize("hasPermission(#request,'schedule_payment')")
     @GetMapping(value = "/payments/{payment_type}/schedule",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse schedulePayment(HttpServletRequest request,
-                                  @NotNull @PathVariable(value = "payment_ref") String paymentRef) {
+                                       @NotNull @RequestBody Map<String, Object> params) {
         String requestId = UUidUtils.generateRef();
         try {
-            Payment paymentData = paymentsService.schedulePayment(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+            String paymentRef = paymentsService.schedulePayment(
+                    requestId, APIAuthorizationManager.user.getRef(), params);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,
-                    generateData("data", paymentData));
+                    generateData("data", paymentRef));
         } catch (Exception e) {
             return new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
                     e.getMessage(),
@@ -98,17 +97,15 @@ public class PaymentsController  extends BaseController {
      * payment request must be handled in the payment service based on the
      * specified @Param paymentType.
      * @param request
-     * @param response
-     * @return
+     * @return ApiResponse
      */
     @PostMapping(value = "/payments/{payment_type}/result",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse processPaymentResult(HttpServletRequest request,
-                                  @NotNull @RequestBody String response) {
+    public ApiResponse processSchedulePaymentResult(HttpServletRequest request,
+                                                    @NotNull @RequestBody String paymentResult) {
         String requestId = UUidUtils.generateRef();
         try {
-            Payment paymentData = paymentsService.processPaymentResult(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+            Payment paymentData = paymentsService.processPaymentValidation(requestId, paymentResult);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,
@@ -127,15 +124,16 @@ public class PaymentsController  extends BaseController {
      * of this request will be based on the specified @Param paymentType.
      */
     @PostMapping(value = "/payments/{payment_type}/timeout")
-    public ApiResponse processTimeout(HttpServletRequest httpServletRequest) {
+    public ApiResponse processPaymentTimeout(HttpServletRequest httpServletRequest,
+                                             @NotNull @RequestBody String paymentRef) {
         String requestId = UUidUtils.generateRef();
         try {
-            Payment paymentData = paymentsService.processPaymentTimeout(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+            String transactionRef = paymentsService.processPaymentTimeout(
+                    requestId, paymentRef);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,
-                    generateData("data", paymentData));
+                    generateData("transaction_ref", transactionRef));
         } catch (Exception e) {
             return new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
                     e.getMessage(),
@@ -148,16 +146,18 @@ public class PaymentsController  extends BaseController {
      * This function triggers a check/validation on a payment request. Handling of this
      * request will be based on a specific @Param paymentType in the payments-service.
      */
+    @PreAuthorize("hasPermission(#request,'validate_payment')")
     @PostMapping(value = "/payments/{payment_type}/validate")
-    public ApiResponse validatePayment(HttpServletRequest httpServletRequest) {
+    public ApiResponse validatePayment(HttpServletRequest httpServletRequest,
+                                       @NotNull @RequestBody String paymentRef) {
         String requestId = UUidUtils.generateRef();
         try {
-            Payment paymentData = paymentsService.validatePayment(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+            String paymentData = paymentsService.validatePayment(
+                    requestId, paymentRef);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
-                    StringConstants.SUCCESS_OBTAINED_PAYMENTS,
-                    requestId,
-                    generateData("data", paymentData));
+                                    StringConstants.SUCCESS_OBTAINED_PAYMENTS,
+                                    requestId,
+                                    generateData("data", paymentData));
         } catch (Exception e) {
             return new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
                     e.getMessage(),
@@ -171,11 +171,12 @@ public class PaymentsController  extends BaseController {
      * request will be based on a specific @Param paymentType in the payments-service.
      */
     @PostMapping(value = "/payments/{payment_type}/status")
-    public ApiResponse processPaymentStatus(HttpServletRequest httpServletRequest) {
+    public ApiResponse processValidatePaymentStatus(HttpServletRequest httpServletRequest,
+                                                    @NotNull @RequestBody String paymentRef) {
         String requestId = UUidUtils.generateRef();
         try {
             Payment paymentData = paymentsService.processPaymentValidation(
-                    requestId, APIAuthorizationManager.user.getRef(), paymentRef);
+                    requestId, paymentRef);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,
@@ -186,6 +187,4 @@ public class PaymentsController  extends BaseController {
                     requestId);
         }
     }
-
-
 }

@@ -51,9 +51,8 @@ endpoints:
     host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
     username: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
     password: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/consumption
-  bees:
-    callback-url: /v1/callback
-    forward-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/callback
+  payments:
+    host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/payments
     username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
     password: ${PAYMENTS_SERVICE_PASSWORD:password}
   meters:
