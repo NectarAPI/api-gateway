@@ -55,6 +55,11 @@ endpoints:
     host: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/v1/payments
     username: ${PAYMENTS_SERVICE_USERNAME:payments_service}
     password: ${PAYMENTS_SERVICE_PASSWORD:password}
+    schedule-payments-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/schedule
+    callback-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/callback
+    timeout-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/timeout
+    validate-payments-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/validate
+    validate-payments-result-url: ${PAYMENTS_SERVICE_HOST:http://localhost:8085}/status
   meters:
     host: ${METERS_SERVICE_HOST:http://localhost:8082}/v1/meters
     username: ${METERS_SERVICE_USERNAME:user_service}

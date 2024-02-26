@@ -1,8 +1,9 @@
-package ke.co.nectar.api.controllers;
+package ke.co.nectar.api.controllers.payments;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import ke.co.nectar.api.constants.StringConstants;
+import ke.co.nectar.api.controllers.BaseController;
 import ke.co.nectar.api.controllers.response.ApiResponse;
 import ke.co.nectar.api.domain.Payment;
 import ke.co.nectar.api.service.payment.PaymentsService;
@@ -67,20 +68,21 @@ public class PaymentsController  extends BaseController {
     /**
      * This controller processes incoming payment requests and
      * triggers a payment request based on the specified
-     * @Param paymentType, which must be supported in the payments
-     * service.
-     * @param request
+     * @Param paymentType. This payment type must be implemented
+     * in the payments service.
+     * @param request HttpServletRequest for incoming request
+     * @param paymentRequest Payment request parameters
      * @return
      */
     @PreAuthorize("hasPermission(#request,'schedule_payment')")
     @GetMapping(value = "/payments/{payment_type}/schedule",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse schedulePayment(HttpServletRequest request,
-                                       @NotNull @RequestBody Map<String, Object> params) {
+                                       @NotNull @RequestBody PaymentRequest paymentRequest) {
         String requestId = UUidUtils.generateRef();
         try {
             String paymentRef = paymentsService.schedulePayment(
-                    requestId, APIAuthorizationManager.user.getRef(), params);
+                    requestId, APIAuthorizationManager.user.getRef(), paymentRequest);
             return new ApiResponse(StringConstants.SUCCESS_CODE,
                     StringConstants.SUCCESS_OBTAINED_PAYMENTS,
                     requestId,

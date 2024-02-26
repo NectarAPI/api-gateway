@@ -1,5 +1,6 @@
 package ke.co.nectar.api.service.payment.impl;
 
+import ke.co.nectar.api.controllers.payments.PaymentRequest;
 import ke.co.nectar.api.controllers.response.ApiResponse;
 import ke.co.nectar.api.domain.Payment;
 import ke.co.nectar.api.service.exceptions.ApiResponseException;
@@ -10,18 +11,21 @@ import ke.co.nectar.api.validation.authoritization.BasicAuthCredentials;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class PaymentsServiceImpl implements PaymentsService {
 
     @Autowired
     private RequestUtils requestUtils;
 
-    @Value("${payments.host}")
+    @Value("${endpoints.payments.host}")
     private String paymentsHost;
 
     @Value("${endpoints.payments.callback-url}")
@@ -29,9 +33,6 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Value("${endpoints.payments.timeout-url}")
     private String paymentsQueueTimeoutUrl;
-
-    @Value("${endpoints.payments.check-payments-url}")
-    private String checkPaymentsUrl;
 
     @Value("${endpoints.payments.schedule-payments-url}")
     private String schedulePaymentsUrl;
@@ -77,7 +78,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 
     @Override
-    public Payment  getPayment(String requestId, String paymentRef) throws Exception {
+    public Payment getPayment(String requestId, String paymentRef) throws Exception {
         final String REQUEST_URL = String.format("%s?request_id=%s&ref=%s",
                 paymentsHost, requestId, paymentRef);
         ApiResponse response = requestUtils.get(
@@ -98,13 +99,18 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public String schedulePayment(String requestId, String userRef, Map<String, Object> params)
+    public String schedulePayment(String requestId, String userRef, PaymentRequest paymentRequest)
             throws Exception {
-        final String REQUEST_URL = String.format("%s?request_id=%s&user_ref=%s",
+        final String REQUEST_URL = String.format("%s/schedule?request_id=%s&user_ref=%s",
                 paymentsHost, requestId, userRef);
+        Map<String, Object> paymentRequestParams = new HashMap<>();
+        paymentRequestParams.put("type", paymentRequest.getType());
+        paymentRequestParams.put("amount", paymentRequest.getAmount());
+        paymentRequestParams.putAll(paymentRequest.getData().get());
+
         ApiResponse apiResponse = requestUtils.post(new BasicAuthCredentials(paymentsBasicAuthUsername,
                                                                         paymentsBasicAuthPassword),
-                                                REQUEST_URL, new Payload(params).toJson().toString());
+                                                REQUEST_URL, new Payload(paymentRequestParams).toJson().toString());
         if (apiResponse.getStatus().getCode() == 200) {
             return new JSONObject(apiResponse.getData()).getString("transaction_ref");
         }
@@ -112,7 +118,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public String processSchedulePaymentResult(String requestId, String paymentResult)
+    public String processSchedulePaymentCallback(String requestId, String paymentResult)
             throws Exception {
         final String REQUEST_URL = String.format("%s/callback?request_id=%s", paymentsHost,
                 requestId);

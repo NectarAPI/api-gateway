@@ -1,9 +1,11 @@
 package ke.co.nectar.api.service.payment;
 
+import ke.co.nectar.api.controllers.payments.PaymentRequest;
 import ke.co.nectar.api.domain.Payment;
 
 import java.util.List;
 import java.util.Map;
+
 
 public interface PaymentsService {
 
@@ -11,9 +13,9 @@ public interface PaymentsService {
 
     Payment  getPayment(String requestId, String paymentRef) throws Exception;
 
-    String schedulePayment(String requestId, String userRef, Map<String, Object> params) throws Exception;
+    String schedulePayment(String requestId, String userRef, PaymentRequest paymentRequest) throws Exception;
 
-    String processSchedulePaymentResult(String requestId, String paymentResult) throws Exception;
+    String processSchedulePaymentCallback(String requestId, String paymentResult) throws Exception;
 
     String processPaymentTimeout(String requestId, String paymentResult) throws Exception;
 
